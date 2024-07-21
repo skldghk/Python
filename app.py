@@ -12,7 +12,10 @@ from tensorflow.keras.models import load_model
 from fuzzywuzzy import fuzz
 from urllib.parse import quote_plus
 from datetime import datetime
+from dotenv import load_dotenv
+import os
 
+load_dotenv()
 # nltk 데이터 다운로드
 nltk.download('punkt')
 nltk.download('wordnet')
@@ -25,10 +28,17 @@ words = json.loads(open('words.json', encoding='utf-8').read())
 classes = json.loads(open('classes.json', encoding='utf-8').read())
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = 'fdaupfjvhnz;cl,l/,l,jdfihaohioy314872h9ruohfuihiosahfidah83y71h8rfbiobiHWIOHFQIBDKSBZKBMBCVJKXBHKEHIUFOQHJKSLA:HIfhuiowbiwqohdsiunzncvihi71848191579791579--10-5849172t8gyrwhbvdkcbzinvjkhiufohauioabewiuahiu'
-password = 'As31882773@@'
-encoded_password = quote_plus(password)
-app.config['SQLALCHEMY_DATABASE_URI'] = f'mysql+pymysql://root:{encoded_password}@localhost/chatbot_db'
+app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
+db_user = os.getenv('DB_USER')
+db_password = os.getenv('DB_PASSWORD')
+db_host = os.getenv('DB_HOST')
+db_port = os.getenv('DB_PORT')
+db_name = os.getenv('DB_NAME')
+
+# SQLAlchemy 데이터베이스 URI 설정
+app.config['SQLALCHEMY_DATABASE_URI'] = (
+    f'mysql+pymysql://{db_user}:{db_password}@{db_host}:{db_port}/{db_name}'
+)
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db = SQLAlchemy(app)

@@ -1,0 +1,10 @@
+Flask
+flask-login
+flask-sqlalchemy
+flask-migrate
+flask-wtf
+flask-bcrypt
+nltk
+tensorflow
+fuzzywuzzy
+pymysql
